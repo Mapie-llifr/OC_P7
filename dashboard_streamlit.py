@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
-import random
-import matplotlib.pyplot as plt
+#import random
+import pyplot as plt
+#import matplotlib.pyplot as plt
 import requests
 
 st.set_page_config(layout="wide")
