@@ -73,4 +73,4 @@ def feat_import():
 
 api.run()
 
-# python test_api.py
+# python api.py

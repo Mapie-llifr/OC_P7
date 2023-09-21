@@ -8,12 +8,16 @@ st.set_page_config(layout="wide")
 
 DATA_URL = "./Docs_projet7/df_model_final.csv"
 api_path = "http://127.0.0.1:5000"
+DEF_URL = "./Docs_projet7/HomeCredit_columns_description.csv"
 
 @st.cache_data
 def load_data(nrows):
+    """Récupère nrows du tableau de données, et 
+    supprime la variable TARGET"""
+    def_data = pd.read_csv(DEF_URL, encoding_errors='ignore')
     data = pd.read_csv(DATA_URL, nrows=nrows)
     data = data.drop('TARGET', axis=1)
-    return data
+    return data, def_data
 
 
 def data_boxplot(data, colonne, value=None): 
@@ -50,14 +54,14 @@ def predict(client):
 def scoring(client): 
     score = predict(client)['score']
     if score == 1 : 
-        pret = {'body' : 'pret accordé', 
+        pret = {'body' : 'PRÊT ACCORDÉ', 
                 'divider' : 'green'}
         st.balloons()
     elif score == 5 :
-        pret = {'body' : 'pret risqué', 
+        pret = {'body' : 'PRÊT RISQUÉ', 
                 'divider' : 'blue'}
     elif score == 0 : 
-        pret = {'body' : 'pret refusé', 
+        pret = {'body' : 'PRÊT REFUSÉ', 
                 'divider' : 'red'}
         st.snow()
     else : 
@@ -76,25 +80,26 @@ def feat_import(client):
 def fig_var(df, var, client) : 
     idx_client = df[df['SK_ID_CURR'] == client].index[0]
     value = df.at[idx_client, var]
-    if df[var].dtype == 'object' : 
-        fig = distrib_score(df, var, value)
-    else :
-        fig = data_boxplot(df, var, value)
+    fig = data_boxplot(df, var, value)
     return fig
 
+
+def make_def(col) :
+    idx_col = def_df[def_df.Row == col].index[0]
+    description = def_df.iloc[idx_col, 3]
+    return f"Définition de la variable : {description}"
+
+
+
+st.title(body="Prêt à dépenser", anchor=False)
+st.header(body="Demande de crédit", anchor=False, divider="grey")
 
 # Create a text element and let the reader know the data is loading.
 data_load_state = st.text('Loading data...')
 # Load 10,000 rows of data into the dataframe.
-df = load_data(80000)
+df, def_df = load_data(80000)
 # Notify the reader that the data was successfully loaded.
 data_load_state.text("Loading data... Done!")
-
-
-st.title(body="Mon dashboard", 
-         anchor=False)
-
-
 
 col1, col2 =  st.columns(spec=[0.5, 0.5], 
                          gap="small")
@@ -113,15 +118,21 @@ with col1 :
               value = (1-predict(id_client)['prediction'])*100, 
               help = "Pourcentage de chance de remboursement de l'emprunt.")
     
-    st.subheader(body = scoring(id_client)['body'],
+    st.header(body = scoring(id_client)['body'], anchor=False,
                 divider = scoring(id_client)['divider'],
-                help = "Interpretation de la probabilité en fonction du risque métier.")
-
-    st.pyplot(
-              #fig = feature_bar(feature_importance, id_client), 
-              fig = feature_bar(feat_import(id_client), id_client),
+                help = "Interpretation de la probabilité  de non remboursement, en fonction du risque métier. Si la probabilité de non remboursement est au-dessus d'un certain seuil, le prêt ne peut pas être accordé")
+    
+    st.subheader(body = "Importance des variables dans la prise de décision",
+                 anchor=False,
+                 help = "Dix variables les plus influentes dans la décision d'accorder ou non le prêt. Les variables à valeur positive sont en faveur de l'accord, les variables à valeur négative sont en faveur du refus du prêt.")
+    
+    st.pyplot(fig = feature_bar(feat_import(id_client), id_client),
               clear_figure=True, 
               use_container_width = True)
+    
+    st.divider()
+    
+    st.subheader(body = "Données d'application du client", anchor=False)
     
     st.dataframe(data=df[df['SK_ID_CURR'] == id_client].transpose(), 
                  hide_index = False, 
@@ -141,11 +152,16 @@ with col2 :
     if st.session_state.colonne == 'SK_ID_CURR': 
         st.text("Indiquez une variable ...")
     else : 
+        st.subheader(body = "Distribution de la variable sur l'ensemble de la clientèle", 
+                     anchor=False, 
+                     help = "Affichage de la distribution de la variable sélectionnée, la médiane est indiquée en orange, le client est le point bleu.")
         st.pyplot(fig = fig_var(df, st.session_state.colonne, id_client), 
                        clear_figure=False, 
                        use_container_width = True)
+        
+        st.text(make_def(st.session_state.colonne))
     
-# streamlit run test_streamlit.py
+# streamlit run dashboard_streamlit.py
     
     
 
