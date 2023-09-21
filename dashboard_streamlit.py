@@ -7,7 +7,7 @@ import requests
 st.set_page_config(layout="wide")
 
 DATA_URL = "./Docs_projet7/df_model_final.csv"
-api_path = "http://127.0.0.1:5000"
+api_path = "Mapiellifr.eu.pythonanywhere.com" #"http://127.0.0.1:5000"
 DEF_URL = "./Docs_projet7/HomeCredit_columns_description.csv"
 
 @st.cache_data
