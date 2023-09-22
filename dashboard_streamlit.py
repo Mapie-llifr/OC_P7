@@ -7,16 +7,17 @@ import requests
 st.set_page_config(layout="wide")
 
 api_path = "http://127.0.0.1:5000"
-apa_path = "https://eu.pythonanywhere.com/user/Mapiellifr/webapps/#id_mapiellifr_eu_pythonanywhere_com"
+data_path = "https://eu.pythonanywhere.com/user/Mapiellifr/files/home/Mapiellifr/OC_P7/"
 #DATA_URL = "./Docs_projet7/df_model_final.csv"
-DATA_URL = apa_path + "/home/Mapiellifr/OC_P7/small_df_model_final.csv"
-
+DATA_URL = data_path + "small_df_model_final.csv"
+DEF_URL = data_path + "HomeCredit_columns_description.csv"
 
 @st.cache_data
 def load_data(nrows):
+    def_data = pd.read(DEF_URL)
     data = pd.read_csv(DATA_URL, nrows=nrows)
     data = data.drop('TARGET', axis=1)
-    return data
+    return data, def_data
 
 
 def data_boxplot(data, colonne, value=None): 
@@ -86,7 +87,7 @@ def fig_var(df, var, client) :
 # Create a text element and let the reader know the data is loading.
 data_load_state = st.text('Loading data...')
 # Load 10,000 rows of data into the dataframe.
-df = load_data(20000)
+df, def_df = load_data(20000)
 # Notify the reader that the data was successfully loaded.
 data_load_state.text("Loading data... Done!")
 
