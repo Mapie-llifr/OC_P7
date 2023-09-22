@@ -3,7 +3,7 @@ cffi==1.15.1
 cloudpickle==2.2.1
 defusedxml==0.7.1
 lightgbm==3.3.5
-matplotlib==3.7.1
+matplotlib==3.7.2
 numpy==1.25.2
 packaging==23.0
 pandas==1.5.3
