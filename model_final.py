@@ -448,6 +448,7 @@ def kfold_lightgbm(experiment_id= experiment_id, num_folds= 5, debug= False):
         
     print("Making Data set ...")
     df = make_data(df)
+    #df = pd.read_csv("Docs_projet7/df_model_final.csv")
     print("Data set shape: ", df.shape)
     
     feats = [f for f in df.columns if f not in ['TARGET','SK_ID_CURR','SK_ID_BUREAU','SK_ID_PREV','index']]
@@ -533,11 +534,11 @@ SEED = 11
 
 # Files are in a folder named : 'Docs_projet7'
 path = "./Docs_projet7/"
-"""
+
 mlflow.end_run()
 with timer("Training Final model"):
     feat_import = kfold_lightgbm(num_folds=5, debug=False)
-"""
+
 
 # Make the data for the app : 
 #app_train = pd.read_csv(path + 'application_train.csv', nrows=80000)

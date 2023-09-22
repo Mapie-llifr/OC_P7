@@ -1,0 +1,13 @@
+.ipynb_checkpoints/
+Analyse exlporatoire.ipynb
+Docs_projet7/
+Fonction scoring metier.ipynb
+Notebook_modelisation.ipynb
+lgbm_importances01.png
+mlruns/
+roc_curve.png
+Evidently_nb.ipynb
+Kernel_model.ipynb
+Evidently/
+pipeline_lightGBM_final.joblib
+
