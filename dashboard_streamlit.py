@@ -79,17 +79,14 @@ def feat_import(client):
 def fig_var(df, var, client) : 
     idx_client = df[df['SK_ID_CURR'] == client].index[0]
     value = df.at[idx_client, var]
-    if df[var].dtype == 'object' : 
-        fig = distrib_score(df, var, value)
-    else :
-        fig = data_boxplot(df, var, value)
+    fig = data_boxplot(df, var, value)
     return fig
 
 
 # Create a text element and let the reader know the data is loading.
 data_load_state = st.text('Loading data...')
 # Load 10,000 rows of data into the dataframe.
-df = load_data(80000)
+df = load_data(20000)
 # Notify the reader that the data was successfully loaded.
 data_load_state.text("Loading data... Done!")
 
