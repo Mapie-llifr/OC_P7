@@ -6,8 +6,11 @@ import requests
 
 st.set_page_config(layout="wide")
 
-DATA_URL = "./Docs_projet7/df_model_final.csv"
-api_path = "http://127.0.0.1:5000"
+apa_path = "http://127.0.0.1:5000"
+#api_path = "https://eu.pythonanywhere.com/user/Mapiellifr/webapps/#id_mapiellifr_eu_pythonanywhere_com"
+#DATA_URL = "./Docs_projet7/df_model_final.csv"
+DATA_URL = api_path + "/home/Mapiellifr/OC_P7/small_df_model_final.csv"
+
 
 @st.cache_data
 def load_data(nrows):
