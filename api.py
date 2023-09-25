@@ -7,10 +7,13 @@ from joblib import load
 api = Flask(__name__)
 api.config["DEBUG"] = True
 
+@api.route("/")
+def hello_world():
+    return "Hello World !"
 
 #MODEL = 'small_model_final.joblib'
 #DATA_URL = "https://eu.pythonanywhere.com/user/Mapiellifr/files/home/Mapiellifr/OC_P7/small_df_model_final.csv"
-#MODEL_URL = "" + MODEL
+#MODEL_URL = "https://github.com/Mapie-llifr/OC_P7/blob/main/" + MODEL
 MODEL = "pipeline_lightGBM_final.joblib"        #local
 DATA_URL = "./Docs_projet7/small_df_model_final.csv"  #local
 MODEL_URL = MODEL                               # local
