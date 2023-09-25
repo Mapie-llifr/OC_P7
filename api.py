@@ -16,7 +16,7 @@ def hello_world():
 #MODEL_URL = "https://github.com/Mapie-llifr/OC_P7/blob/main/" + MODEL
 MODEL = "pipeline_lightGBM_final.joblib"        #local
 DATA_URL = "./Docs_projet7/small_df_model_final.csv"  #local
-MODEL_URL = MODEL                               # local
+#MODEL_URL = MODEL                               # local
 SEUIL = 0.20
 
 
