@@ -9,7 +9,7 @@ api.config["DEBUG"] = True
 
 @api.route("/")
 def hello_world():
-    "Hello World"
+    return "Hello World"
 
 MODEL = 'small_model_final.joblib'
 #DATA_URL = "https://github.com/Mapie-llifr/OC_P7/blob/main/Docs_projet7/small_df_model_final.csv" #"https://eu.pythonanywhere.com/user/Mapiellifr/files/home/Mapiellifr/OC_P7/small_df_model_final.csv"
