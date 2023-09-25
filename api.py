@@ -7,10 +7,13 @@ from joblib import load
 api = Flask(__name__)
 api.config["DEBUG"] = True
 
-#DATA_URL = 
-#MODEL_URL = 
-DATA_URL = "./Docs_projet7/df_model_final.csv"  #local
-MODEL_URL = 'pipeline_lightGBM_final.joblib'   # local
+
+#MODEL = 'small_model_final.joblib'
+#DATA_URL = "https://eu.pythonanywhere.com/user/Mapiellifr/files/home/Mapiellifr/OC_P7/small_df_model_final.csv"
+#MODEL_URL = "" + MODEL
+MODEL = "pipeline_lightGBM_final.joblib"        #local
+DATA_URL = "./Docs_projet7/small_df_model_final.csv"  #local
+MODEL_URL = MODEL                               # local
 SEUIL = 0.20
 
 
@@ -38,21 +41,28 @@ def accord(pred) :
 
 
 def make_feats(client):
-    """
-    key_feat = [col for col in random.sample(df.columns.to_list(), 10)]
-    feature_importance = {key : round(random.random(),2) for key in key_feat}
-    """
+    
     X_client = df[df['SK_ID_CURR'] == client]
     X_client = X_client.drop('SK_ID_CURR', axis=1)
-    feats_pred = clf.predict_proba(X_client, pred_contrib=True)
-    importance_serie = pd.Series(data=feats_pred[0,0:-1], 
+    
+    if MODEL == "pipeline_lightGBM_final.joblib":
+        feats_pred = clf.predict_proba(X_client, pred_contrib=True)
+        importance_serie = pd.Series(data=feats_pred[0,0:-1], 
                                  index=X_client.columns)
+        
+    elif MODEL == "small_model_final.joblib":
+        scaler = clf.named_steps['classifier'].named_steps['scaler']
+        values = scaler.transform(X_client)
+        feats_pred = clf.named_steps['classifier'].named_steps['lr'].coef_ * values
+        importance_serie = pd.Series(data=feats_pred[0], 
+                                     index=X_client.columns)
+    
     best_feats = importance_serie.loc[importance_serie.abs().sort_values(
                                                 ascending=False)[:10].index]
     feature_importance = best_feats.to_dict()
     return feature_importance
 
-df = load_data(10000)
+df = load_data(3000)
 
 clf = load(MODEL_URL)
 
@@ -70,6 +80,7 @@ def predict():
 
 @api.route("/feats")
 def feat_import():
+    clf = load(MODEL_URL)
     if 'id' in request.args:
         id_client = int(request.args['id'])
     else : 
