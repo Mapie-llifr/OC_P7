@@ -9,9 +9,10 @@ st.set_page_config(layout="wide")
 #DATA_URL = "https://eu.pythonanywhere.com/user/Mapiellifr/files/home/Mapiellifr/OC_P7/small_df_model_final.csv"
 #DEF_URL = "https://eu.pythonanywhere.com/user/Mapiellifr/files/home/Mapiellifr/OC_P7/HomeCredit_columns_description.csv"
 #api_path = "https://pretadepenser-06a8123a2ba8.herokuapp.com"  #"http://mapiellifr.eu.pythonanywhere.com"
+api_path = "http://192.168.1.15:5000"
 DATA_URL = "./Docs_projet7/small_df_model_final.csv"  #local
 DEF_URL = "./Docs_projet7/HomeCredit_columns_description.csv"   # local
-api_path = "http://127.0.0.1:5000"    #local
+#api_path = "http://127.0.0.1:5000"    #local
 
 
 @st.cache_data
