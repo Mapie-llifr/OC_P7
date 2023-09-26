@@ -5,7 +5,7 @@ import pandas as pd
 from joblib import load
 
 api = Flask(__name__)
-api.config["DEBUG"] = True
+api.config["DEBUG"] = False
 
 @api.route("/")
 def hello_world():
@@ -16,7 +16,7 @@ def hello_world():
 #MODEL_URL = "https://github.com/Mapie-llifr/OC_P7/blob/main/" + MODEL
 MODEL = "pipeline_lightGBM_final.joblib"        #local
 DATA_URL = "./Docs_projet7/small_df_model_final.csv"  #local
-#MODEL_URL = MODEL                               # local
+MODEL_URL = MODEL                               # local
 SEUIL = 0.20
 
 
@@ -61,7 +61,7 @@ def make_feats(client):
                                      index=X_client.columns)
     
     best_feats = importance_serie.loc[importance_serie.abs().sort_values(
-                                                ascending=False)[:10].index]
+                                                ascending=False)[:10].index].round(4)
     feature_importance = best_feats.to_dict()
     return feature_importance
 
@@ -75,7 +75,7 @@ def predict():
         id_client = int(request.args['id'])
     else:
         return "Error: No id field provided. Please specify an id."
-    pred_val = prediction(id_client)
+    pred_val = round(prediction(id_client),4)
     score_metier = accord(pred_val)
     return {'prediction': pred_val, 
             'score': score_metier, 
@@ -91,6 +91,7 @@ def feat_import():
     feature_importance = make_feats(id_client)
     return feature_importance
 
-api.run()
+#api.run()
+api.run(host="0.0.0.0", port=5000)
 
 # python api.py
