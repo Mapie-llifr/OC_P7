@@ -13,6 +13,14 @@ Les données : dans Docs_projet7
 Autres fichiers :      
 - dashboard_streamlit : fichier principal, utilisant la librairie Streamlit pour l'affichage des composants web  
 
+## Installation
+Installation de Python : https://www.python.org/downloads/  
+Installation des dépendences :  
+```bash
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+
 ## Requirements
 Environnement nécessaire au fonctionnement de l'application :       
 - Python, version 3.10  
