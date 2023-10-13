@@ -165,7 +165,7 @@ def make_def(col) :
     """
     idx_col = def_df[def_df.Row == col].index[0]
     description = def_df.iloc[idx_col, 3]
-    return f"Définition de la variable séléctionnée : {description}"
+    return f"Définition de la variable sélectionnée : {description}"
 
 # Titres
 st.title(body="Prêt à Dépenser", 
@@ -197,7 +197,7 @@ with col1 :
         st.error('Cet id client n\'existe pas', icon="🚨")
     
     # Affichage de la probabilité de remboursement
-    st.metric(label="Probabilité de remboursement" , 
+    st.metric(label="Probabilité de Remboursement" , 
               value = (1-predict(id_client)['prediction'])*100, 
               help = "Pourcentage de chance que l'emprunt soit remboursé si le crédit est accepté.")
     
@@ -205,12 +205,12 @@ with col1 :
     st.header(body = scoring(id_client)['body'],
                 divider = scoring(id_client)['divider'],
                 anchor=False, 
-                help = "Interpretation de la probabilité de non remboursement du prêt, en fonction du risque métier. Si la probabilité de non remboursement atteint un certain seuil la demande de prêt se verra refusée.")
+                help = "Interprétation de la probabilité de non remboursement du prêt, en fonction du risque métier. Si la probabilité de non remboursement atteint un certain seuil la demande de prêt se verra refusée.")
     
     # Affichage de la figure montrant la feature importance locale
     st.subheader(body="Importance des variables dans la décision d'accord ou de refus du prêt.", 
                  anchor=False, 
-                 help = "Dix variables ayant le plus de poids dans la prise de décision d'accordé ou de refusé le prêt. Les variables à valeur positive sont en faveur de l'accord, les variables à valeur négative sont en faveur d'un refus du prêt.")
+                 help = "Dix variables ayant le plus de poids dans la prise de décision d'accorder ou de refuser le prêt. Les variables à valeur positive sont en faveur de l'accord, les variables à valeur négative sont en faveur d'un refus du prêt.")
     st.pyplot(fig = feature_bar(feat_import(id_client), id_client),
               clear_figure=True, 
               use_container_width = True)
@@ -230,7 +230,7 @@ with col2 :
     # Champ de saisie du nom de la variable
     st.selectbox(label="Sur quelle variable souhaitez vous comparer votre client:", 
                  options = df.columns, 
-                 placeholder = "Selectionnez une variable ...",
+                 placeholder = "Sélectionnez une variable ...",
                  key="colonne"
                  )
     
@@ -239,9 +239,9 @@ with col2 :
     
     # Affichage de la distribution de la variable et de sa définition
     else : 
-        st.subheader(body="Distribution de la variable séléctionnée sur l'ensemble de la clientèle.", 
+        st.subheader(body="Distribution de la variable sélectionnée sur l'ensemble de la clientèle.", 
                      anchor=False, 
-                     help = "Positionnement du client (point bleu), par rapport au reste des clients (la valeur médinane est la barre horizontale orange).")
+                     help = "Positionnement du client (point bleu), par rapport au reste des clients (la valeur médiane est la barre verticale orange).")
         st.pyplot(fig = fig_var(df, st.session_state.colonne, id_client), 
                        clear_figure=False, 
                        use_container_width = True)
